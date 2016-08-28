@@ -3,4 +3,4 @@ cssSprite 生成工具
 
 ===============================
 
-http://wusfen.github.io/cssSprite
+https://wusfen.github.io/cssSprite
