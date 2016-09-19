@@ -3,10 +3,12 @@ var $isChangeSize = $('#isChangeSize');
 var $iconWidth = $('#iconWidth');
 var $iconHeight = $('#iconHeight');
 var $cssPrefix = $('#cssPrefix');
+var $isPercent = $('#isPercent');
 var $spriteFilename = $('#spriteFilename');
 var $downloadButton = $('#downloadButton');
 
 var $fileInput = $('.fileInput');
+var $fileInputTip = $('.fileInputTip');
 var $editArea = $('.editArea');
 var $css = $('.css');
 var $output = $('.output');
@@ -14,7 +16,7 @@ var $output = $('.output');
 var config = {
     icon: { isChangeSize: false, width: 20, height: 20, gap: 20 },
     sprite: { width: null, height: null, filename: 'sprite.png' },
-    css: { prefix: 'icon-' }
+    css: { prefix: 'icon-', isPercent: true }
 };
 var iconList = {
     /*name: {
@@ -27,12 +29,13 @@ var iconList = {
 };
 
 
-// 绑定数据 
+// 绑定数据
 viewBindData($iconGap, 'config.icon.gap');
 viewBindData($isChangeSize, 'config.icon.isChangeSize');
 viewBindData($iconWidth, 'config.icon.width');
 viewBindData($iconHeight, 'config.icon.height');
 viewBindData($cssPrefix, 'config.css.prefix', createCss);
+viewBindData($isPercent, 'config.css.isPercent', createCss);
 viewBindData($spriteFilename, 'config.sprite.filename', createCss);
 
 function viewBindData($view, valNameStr, event, callback) {
@@ -91,7 +94,7 @@ $fileInput.change(function() {
     addFiles(this.files);
 });
 // 给页面注册拖放事件
-document.addEventListener('dragover', dragover); // 没有这个不行 
+document.addEventListener('dragover', dragover); // 没有这个不行
 document.addEventListener('drop', drop);
 
 function dragover(e) {
@@ -108,6 +111,8 @@ function drop(e) {
 }
 
 function addFiles(files) {
+  $fileInputTip.hide();
+
     for (var i = 0; i < files.length; i++) {
         // 创建作用域
         + function() {
@@ -185,16 +190,22 @@ function addFiles(files) {
 function createCss() {
     var css = '.icon{background:no-repeat url($url)}'
         .replace('$url', config.sprite.filename) + '\n\n';
-    var cssClass = '.$prefix$class{background-position:-$xpx -$ypx}'
+    var cssClass = '.$prefix$class{background-position:$x $y}'
         .replace('$prefix', config.css.prefix);
-    for (var i in iconList) {
-        var c = i.replace(/ /g, '-').replace('_', '-');
-        css += cssClass.replace('$class', c)
-            .replace('$x', iconList[i].left)
-            .replace('$y', iconList[i].top) + '\n';
+    for (var name in iconList) {
+        var c = name.replace(/[_ ]/g, '-');
+        if (config.css.isPercent) {
+          css += cssClass.replace('$class', c)
+              .replace('$x', iconList[name].left/config.sprite.width*100+'%')
+              .replace('$y', iconList[name].top/config.sprite.width*100+'%') + '\n';
+        }else{
+          css += cssClass.replace('$class', c)
+              .replace('$x', -iconList[name].left+'px')
+              .replace('$y', -iconList[name].top+'px') + '\n';
+        }
     }
 
-    css = css.replace(/-0/ig, 0).replace(/([: ])0px/ig, '$10');
+    css = css.replace(/-0(px|%)/ig, 0).replace(/([: ])0(px|%)/ig, '$10');
 
     $css.html(css);
 }

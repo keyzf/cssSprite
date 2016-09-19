@@ -35,7 +35,7 @@
 					X
 					<input class="input small" id="iconHeight" style="width:4em" type="text">
 				</div>
-				<!-- 
+				<!--
 				<div class="form-group">
 					<label class="label"><input type="checkbox"> 纵向</label>
 				</div>
@@ -44,15 +44,18 @@
 					<label class="label">css前缀</label>
 					<input class="input small" id="cssPrefix" style="width:100px" type="text">
 				</div>
+			 <div class="form-group">
+				 <label class="label"><input id="isPercent" type="checkbox">css %</label>
+			 </div>
 				<div class="form-group">
 					<label class="label">文件名</label>
 					<input class="input small" id="spriteFilename" style="width:150px" type="text">
 				</div>
-				<!-- <button type="button">清空</button> -->
 				<!-- <button type="button">重排</button> -->
 				<div class="form-group">
-				<button class="button primary" type="button" onclick="createSprite()">生成 sprite</button>
-				<a id="downloadButton" class="button">下载 sprite</a>
+					<button class="button" type="button" onclick="location.reload()">清空</button>
+					<button class="button primary" type="button" onclick="createSprite()">生成 sprite</button>
+					<a id="downloadButton" class="button">下载 sprite</a>
 				</div>
 			</form>
 		</div>
@@ -63,7 +66,7 @@
 			<div class="editScroll">
 				<div class="editArea"></div>
 				<label class="fileInputArea">
-					<!-- <span class="fileInputTip"> 把小图片们拖进来 </span> -->
+					<span class="fileInputTip"> 把小图片们拖进来 </span>
 					<input class="fileInput" type="file" multiple title="选择图片，或者拖拽，可多选">
 				</label>
 			</div>
@@ -76,7 +79,7 @@
 </div>
 
 <script type="text/javascript" src="lib/jquery.js"></script>
-<script type="text/javascript" src="js/test.js"></script>
+<!-- <script type="text/javascript" src="js/test.js"></script> -->
 <script type="text/javascript" src="js/main.js?a=1"></script>
 </body>
 </html>
