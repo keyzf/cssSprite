@@ -3,7 +3,8 @@ var $isChangeSize = $('#isChangeSize');
 var $iconWidth = $('#iconWidth');
 var $iconHeight = $('#iconHeight');
 var $cssPrefix = $('#cssPrefix');
-var $isPercent = $('#isPercent');
+var $isRem = $('#isRem');
+var $rem2px = $('#rem2px');
 var $spriteFilename = $('#spriteFilename');
 var $downloadButton = $('#downloadButton');
 
@@ -16,7 +17,7 @@ var $output = $('.output');
 var config = {
     icon: { isChangeSize: false, width: 20, height: 20, gap: 20 },
     sprite: { width: null, height: null, filename: 'sprite.png' },
-    css: { prefix: 'icon-', isPercent: true }
+    css: { prefix: 'icon-', isRem: false, rem2px: 100 }
 };
 var iconList = {
     /*name: {
@@ -35,7 +36,8 @@ viewBindData($isChangeSize, 'config.icon.isChangeSize');
 viewBindData($iconWidth, 'config.icon.width');
 viewBindData($iconHeight, 'config.icon.height');
 viewBindData($cssPrefix, 'config.css.prefix', createCss);
-viewBindData($isPercent, 'config.css.isPercent', createCss);
+viewBindData($isRem, 'config.css.isRem', createCss);
+viewBindData($rem2px, 'config.css.rem2px', createCss);
 viewBindData($spriteFilename, 'config.sprite.filename', createCss);
 
 function viewBindData($view, valNameStr, event, callback) {
@@ -194,10 +196,10 @@ function createCss() {
         .replace('$prefix', config.css.prefix);
     for (var name in iconList) {
         var c = name.replace(/[_ ]/g, '-');
-        if (config.css.isPercent) {
+        if (config.css.isRem) {
           css += cssClass.replace('$class', c)
-              .replace('$x', iconList[name].left/config.sprite.width*100+'%')
-              .replace('$y', iconList[name].top/config.sprite.width*100+'%') + '\n';
+              .replace('$x', -iconList[name].left/config.css.rem2px+'rem')
+              .replace('$y', -iconList[name].top/config.css.rem2px+'rem') + '\n';
         }else{
           css += cssClass.replace('$class', c)
               .replace('$x', -iconList[name].left+'px')
@@ -205,7 +207,7 @@ function createCss() {
         }
     }
 
-    css = css.replace(/-0(px|%)/ig, 0).replace(/([: ])0(px|%)/ig, '$10');
+    css = css.replace(/-0(px|em|rem|%)/ig, 0).replace(/([: ])0(px|em|rem|%)/ig, '$10');
 
     $css.html(css);
 }
